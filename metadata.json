@@ -1,6 +1,8 @@
 {
-  "name": "Connected",
-  "description": "Your digital life is made of tiny moments. Connected brings them together to reveal the stories hiding between the receipts.",
+  "name": "LIFELOOP",
+  "description": "Your digital life is made of tiny moments. LIFELOOP connects them to reveal the stories hiding between the receipts.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

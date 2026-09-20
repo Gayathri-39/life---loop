@@ -13,7 +13,8 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Layers
+  Layers,
+  Play
 } from 'lucide-react';
 import { playClick } from '../utils/soundEffects';
 
@@ -223,14 +224,30 @@ export const ReceiptExplorer: React.FC<ReceiptExplorerProps> = ({
                   ID: #{String(selectedReceipt.id).padStart(4, '0')}
                 </span>
               </div>
-              <button
-                type="button"
-                id="btn-close-receipt-modal"
-                onClick={() => setSelectedReceipt(null)}
-                className="p-1.5 rounded-full hover:bg-[#F2ECE1] text-[#7C7469] hover:text-[#161D26]"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                {onExploreMoment && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playClick();
+                      onExploreMoment(selectedReceipt);
+                      setSelectedReceipt(null);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#161D26] text-[#FAF9F5] text-xs font-bold hover:bg-[#283342] shadow-2xs transition-colors"
+                  >
+                    <Play className="w-3 h-3 fill-current text-[#FDE68A]" />
+                    <span>Start Story</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  id="btn-close-receipt-modal"
+                  onClick={() => setSelectedReceipt(null)}
+                  className="p-1.5 rounded-full hover:bg-[#F2ECE1] text-[#7C7469] hover:text-[#161D26]"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Title & Description */}

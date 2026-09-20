@@ -69,8 +69,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-xl tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans']">
-                Connected
+              <span className="font-extrabold text-xl tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans']">
+                LIFELOOP
               </span>
             </div>
             <p className="text-xs text-[#6B7280] hidden sm:block">

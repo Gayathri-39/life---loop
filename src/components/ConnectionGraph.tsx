@@ -138,6 +138,7 @@ export const ConnectionGraph: React.FC<ConnectionGraphProps> = ({
   const [isConnectedMode, setIsConnectedMode] = useState(true);
   const [threshold, setThreshold] = useState(50);
   const [activeMomentFilter, setActiveMomentFilter] = useState<string>('all');
+  const [showMathFormula, setShowMathFormula] = useState(false);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(
     selectedReceiptId ? `node-${selectedReceiptId}` : null
   );
@@ -336,9 +337,9 @@ export const ConnectionGraph: React.FC<ConnectionGraphProps> = ({
               <span>{isConnectedMode ? 'Connected Mode Active' : '✨ Connect the Dots'}</span>
             </button>
 
-            {/* Threshold Slider */}
+            {/* Threshold Slider and Presets */}
             {isConnectedMode && (
-              <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-[#DDD6CA] shadow-2xs">
+              <div className="flex flex-wrap items-center gap-2 bg-white px-3 py-2 rounded-xl border border-[#DDD6CA] shadow-2xs">
                 <Sliders className="w-3.5 h-3.5 text-[#7C7469]" />
                 <span className="text-[11px] font-medium text-[#4B5563]">Min Score:</span>
                 <input
@@ -352,8 +353,46 @@ export const ConnectionGraph: React.FC<ConnectionGraphProps> = ({
                   title={`Connection threshold: ${threshold} pts`}
                 />
                 <span className="text-xs font-mono font-bold text-[#161D26] w-6">{threshold}</span>
+
+                <div className="flex items-center gap-1 border-l border-[#E5E0D6] pl-2 ml-1">
+                  <button
+                    type="button"
+                    onClick={() => { playClick(); setThreshold(40); }}
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${threshold === 40 ? 'bg-[#161D26] text-white' : 'bg-[#FAF9F5] text-[#6B7280] hover:text-[#161D26]'}`}
+                  >
+                    Loose 40
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { playClick(); setThreshold(50); }}
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${threshold === 50 ? 'bg-[#161D26] text-white' : 'bg-[#FAF9F5] text-[#6B7280] hover:text-[#161D26]'}`}
+                  >
+                    Balanced 50
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { playClick(); setThreshold(70); }}
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${threshold === 70 ? 'bg-[#161D26] text-white' : 'bg-[#FAF9F5] text-[#6B7280] hover:text-[#161D26]'}`}
+                  >
+                    Strict 70
+                  </button>
+                </div>
               </div>
             )}
+
+            {/* Engine Formula Modal Trigger */}
+            <button
+              type="button"
+              id="btn-inspect-affinity-formula"
+              onClick={() => {
+                playClick();
+                setShowMathFormula(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#DDD6CA] text-xs font-medium text-[#4B5563] hover:text-[#161D26] hover:bg-[#F2ECE1] shadow-2xs transition-colors"
+            >
+              <Info className="w-3.5 h-3.5 text-[#2B6CB0]" />
+              <span>Affinity Math</span>
+            </button>
           </div>
         </div>
 
@@ -486,6 +525,35 @@ export const ConnectionGraph: React.FC<ConnectionGraphProps> = ({
                 </div>
               </div>
 
+              {/* Parent Moment Link */}
+              {(() => {
+                const parentMoment = moments.find(m => m.receiptIds.includes(activeNodeDetails.id));
+                if (!parentMoment) return null;
+                return (
+                  <div className="p-3.5 rounded-2xl bg-[#F0F7FF] border border-[#BFDBFE] space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#1D4ED8]">
+                        Part of Life Moment
+                      </span>
+                      <span className="text-[10px] font-mono text-[#6B7280]">
+                        {parentMoment.receipts.length} activities
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-[#161D26] line-clamp-1">{parentMoment.title}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        playClick();
+                        onExploreMoment?.(parentMoment);
+                      }}
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-1.5 rounded-xl bg-[#161D26] text-[#FAF9F5] text-xs font-semibold hover:bg-[#283342] shadow-2xs transition-all"
+                    >
+                      <span>▶ Start Story for This Moment</span>
+                    </button>
+                  </div>
+                );
+              })()}
+
               {/* Why Connected? Explanation Section */}
               <div className="space-y-3 pt-3 border-t border-[#EAE5DC]">
                 <div className="flex items-center justify-between">
@@ -534,6 +602,93 @@ export const ConnectionGraph: React.FC<ConnectionGraphProps> = ({
           )}
         </div>
       </div>
+
+      {/* Affinity Math Formula Modal */}
+      {showMathFormula && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl border border-[#DDD6CA] shadow-2xl max-w-lg w-full p-6 space-y-5 relative">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EAE5DC]">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-[#E0EDFB] text-[#2B6CB0] flex items-center justify-center">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#161D26] font-['Plus_Jakarta_Sans']">
+                    Affinity Scoring Formula
+                  </h3>
+                  <p className="text-[11px] text-[#6B7280]">
+                    Deterministic 5-factor mathematical model
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMathFormula(false)}
+                className="text-xs text-[#8C8275] hover:text-[#161D26] font-semibold px-2 py-1 rounded-lg hover:bg-[#F2ECE1]"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs text-[#4B5563]">
+              <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#ECE6DC] space-y-1">
+                <div className="flex items-center justify-between font-bold text-[#161D26]">
+                  <span>1. Date Proximity</span>
+                  <span className="font-mono text-[#2B6CB0]">+30 pts</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280]">
+                  Occurring on the exact same date (+30) or within 24 hours overnight rollover (+15).
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#ECE6DC] space-y-1">
+                <div className="flex items-center justify-between font-bold text-[#161D26]">
+                  <span>2. Spatial Co-location</span>
+                  <span className="font-mono text-[#2B6CB0]">+30 pts</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280]">
+                  Shared geographical coordinate city or locality matching within 5km radius.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#ECE6DC] space-y-1">
+                <div className="flex items-center justify-between font-bold text-[#161D26]">
+                  <span>3. Temporal Continuity</span>
+                  <span className="font-mono text-[#2B6CB0]">+10 to +20 pts</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280]">
+                  Occurring within 35 minutes (+20 pts), within 2 hours (+15 pts), or same daypart (+10 pts).
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#ECE6DC] space-y-1">
+                <div className="flex items-center justify-between font-bold text-[#161D26]">
+                  <span>4. Semantic Context Keywords</span>
+                  <span className="font-mono text-[#2B6CB0]">+10 to +20 pts</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280]">
+                  Shared context tags, playlist moods, search queries, or place descriptions.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#FAF9F5] border border-[#ECE6DC] space-y-1">
+                <div className="flex items-center justify-between font-bold text-[#161D26]">
+                  <span>5. Complementary Categories</span>
+                  <span className="font-mono text-[#2B6CB0]">+10 pts</span>
+                </div>
+                <p className="text-[11px] text-[#6B7280]">
+                  Natural narrative pairs (Music + Driving, Coffee + Dialogue, Ticket + Photo).
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-[#E6F4EA] border border-[#CEEAD6] text-xs text-[#2D7A4C] flex items-center justify-between">
+              <span className="font-semibold">Threshold: Default 50 pts qualifies as a connected relationship</span>
+              <span className="font-mono font-bold">Max: 110 pts</span>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

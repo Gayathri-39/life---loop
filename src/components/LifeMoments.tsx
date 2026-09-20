@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { LifeMoment } from '../types';
 import { CATEGORIES } from '../data/categories';
 import {
@@ -8,7 +8,9 @@ import {
   MapPin,
   ArrowRight,
   Compass,
-  Clock
+  Clock,
+  Filter,
+  RotateCcw
 } from 'lucide-react';
 import { playClick } from '../utils/soundEffects';
 
@@ -23,9 +25,24 @@ export const LifeMoments: React.FC<LifeMomentsProps> = ({
   onPlayMomentStory,
   onViewInGraph,
 }) => {
+  const [selectedLocation, setSelectedLocation] = useState<string>('all');
+
+  const uniqueLocations = useMemo(() => {
+    const counts: Record<string, number> = {};
+    moments.forEach(m => {
+      counts[m.location] = (counts[m.location] || 0) + 1;
+    });
+    return Object.entries(counts);
+  }, [moments]);
+
+  const displayedMoments = useMemo(() => {
+    if (selectedLocation === 'all') return moments;
+    return moments.filter(m => m.location === selectedLocation);
+  }, [moments, selectedLocation]);
+
   return (
     <section id="moments-section" className="py-16 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-[#E7E2DA]">
-      <div className="space-y-4 mb-10">
+      <div className="space-y-4 mb-8">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FEF3C7] text-xs font-semibold text-[#B45309]">
           <Compass className="w-3.5 h-3.5" />
           <span>Synthesis Layer</span>
@@ -40,26 +57,78 @@ export const LifeMoments: React.FC<LifeMomentsProps> = ({
             </p>
           </div>
           <div className="text-xs font-mono px-3 py-1.5 rounded-xl bg-[#FAF9F5] border border-[#DDD6CA] text-[#6B7280]">
-            <span className="font-bold text-[#161D26]">{moments.length}</span> Moments Synthesized
+            <span className="font-bold text-[#161D26]">{displayedMoments.length}</span> / {moments.length} Moments Shown
           </div>
+        </div>
+
+        {/* Location Region Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none pt-2">
+          <span className="text-xs font-semibold text-[#8C8275] flex items-center gap-1 shrink-0">
+            <Filter className="w-3 h-3" /> Region:
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              playClick();
+              setSelectedLocation('all');
+            }}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors shrink-0 ${
+              selectedLocation === 'all'
+                ? 'bg-[#161D26] text-white'
+                : 'bg-white text-[#544F49] border border-[#DDD6CA] hover:bg-[#F2ECE1]'
+            }`}
+          >
+            All Regions ({moments.length})
+          </button>
+          {uniqueLocations.map(([loc, count]) => (
+            <button
+              key={loc}
+              type="button"
+              onClick={() => {
+                playClick();
+                setSelectedLocation(loc);
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors shrink-0 flex items-center gap-1.5 ${
+                selectedLocation === loc
+                  ? 'bg-[#161D26] text-white'
+                  : 'bg-white text-[#544F49] border border-[#DDD6CA] hover:bg-[#F2ECE1]'
+              }`}
+            >
+              <span>{loc}</span>
+              <span className="text-[10px] font-mono px-1 py-0.2 rounded-full bg-[#E8DFD0]/60 text-[#544F49]">
+                {count}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {moments.length === 0 ? (
+      {displayedMoments.length === 0 ? (
         <div className="bg-white rounded-3xl border border-[#E5E0D6] p-12 text-center space-y-4 max-w-lg mx-auto shadow-xs">
           <div className="w-12 h-12 rounded-2xl bg-[#FEF3C7] text-[#B45309] flex items-center justify-center mx-auto">
             <Compass className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-bold text-[#161D26]">No Moments Synthesized Yet</h3>
+            <h3 className="text-lg font-bold text-[#161D26]">No Moments in {selectedLocation}</h3>
             <p className="text-xs text-[#6B7280]">
-              The Connection Engine requires receipts with matching locations, temporal proximity, or shared semantic keywords.
+              No synthesized moments matched the selected region filter.
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              playClick();
+              setSelectedLocation('all');
+            }}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#161D26] text-white text-xs font-semibold hover:bg-[#283342] shadow-2xs"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Show All Moments</span>
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {moments.map(moment => {
+          {displayedMoments.map(moment => {
           return (
             <article
               key={moment.id}

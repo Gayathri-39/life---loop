@@ -18,7 +18,8 @@ import { playClick, playConnectHarmonics } from '../utils/soundEffects';
 
 interface HeroProps {
   onConnectDots: () => void;
-  onExploreStory: () => void;
+  onExploreStory: (momentIndex?: number) => void;
+  onOpenAiSynthesis?: () => void;
   totalReceiptsCount: number;
   totalConnectionsCount: number;
   totalMomentsCount: number;
@@ -29,6 +30,7 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({
   onConnectDots,
   onExploreStory,
+  onOpenAiSynthesis,
   totalReceiptsCount,
   totalConnectionsCount,
   totalMomentsCount,
@@ -125,29 +127,54 @@ export const Hero: React.FC<HeroProps> = ({
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFECE6] border border-[#DDD6CA] text-xs font-semibold text-[#544F49]">
               <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-              <span>Connected • Relationship Engine & Synthesis</span>
+              <span>LIFELOOP • Relational Memoir Engine</span>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
+            <div className="space-y-2">
+              <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans'] leading-[1.1]">
-                  Start Your Story
+                  LIFELOOP
                 </h1>
-                <span className="text-sm font-mono font-bold px-2.5 py-1 rounded-xl bg-[#161D26] text-[#FAF9F5] shadow-xs">
-                  Connected
+                <span className="text-xs sm:text-sm font-mono font-bold px-3 py-1 rounded-xl bg-[#161D26] text-[#FAF9F5] shadow-xs">
+                  Start Your Story
                 </span>
               </div>
               <p className="text-2xl sm:text-3xl font-medium text-[#7C7469] font-['Playfair_Display'] italic">
-                Hundreds of moments. One connected life.
+                Hundreds of moments. One story.
               </p>
             </div>
 
             <p className="text-base sm:text-lg text-[#5A6372] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Your digital life is made of tiny moments. Connected brings them together to reveal the stories hiding between the receipts.
+              You leave dozens of digital traces every day—coffees, photos, searches, music streams, and tickets. Isolated, they're just transactions. LIFELOOP connects them to reveal the stories hiding between your receipts.
             </p>
 
+            {/* 3-Step Process Architecture Ribbon */}
+            <div className="grid grid-cols-3 gap-2.5 p-2 rounded-2xl bg-white/80 border border-[#E7E2DA] text-left shadow-xs">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-[#FAF9F5] border border-[#ECE6DC]">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#8C8275] uppercase tracking-wider">
+                  <span className="w-4 h-4 rounded-full bg-[#161D26] text-[#FAF9F5] flex items-center justify-center text-[10px]">1</span>
+                  <span>Receipts</span>
+                </div>
+                <p className="text-[11px] text-[#525B6A] mt-1 line-clamp-2">Raw digital traces (Spotify, UPI, Photos, Maps)</p>
+              </div>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-[#FAF9F5] border border-[#ECE6DC]">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#2B6CB0] uppercase tracking-wider">
+                  <span className="w-4 h-4 rounded-full bg-[#2B6CB0] text-white flex items-center justify-center text-[10px]">2</span>
+                  <span>Affinity</span>
+                </div>
+                <p className="text-[11px] text-[#525B6A] mt-1 line-clamp-2">Deterministic time, space & semantic affinity scoring</p>
+              </div>
+              <div className="p-2 sm:p-2.5 rounded-xl bg-[#FAF9F5] border border-[#ECE6DC]">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#2D7A4C] uppercase tracking-wider">
+                  <span className="w-4 h-4 rounded-full bg-[#2D7A4C] text-white flex items-center justify-center text-[10px]">3</span>
+                  <span>Memoir</span>
+                </div>
+                <p className="text-[11px] text-[#525B6A] mt-1 line-clamp-2">Interactive constellation graph & cinematic playback</p>
+              </div>
+            </div>
+
             {/* CTA Buttons */}
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
               <button
                 type="button"
                 id="hero-btn-explore-story"
@@ -155,7 +182,7 @@ export const Hero: React.FC<HeroProps> = ({
                   playClick();
                   onExploreStory();
                 }}
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#161D26] text-[#FAF9F5] text-sm font-semibold hover:bg-[#283342] shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#161D26] text-[#FAF9F5] text-sm font-semibold hover:bg-[#283342] shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Play className="w-4 h-4 text-[#FDE68A] fill-current" />
                 <span>Start Your Story</span>
@@ -165,11 +192,26 @@ export const Hero: React.FC<HeroProps> = ({
                 type="button"
                 id="hero-btn-connect-dots"
                 onClick={handleHeroConnect}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#FFFFFF] text-[#161D26] text-sm font-semibold border border-[#D5CEC2] hover:bg-[#F7F4EE] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#FFFFFF] text-[#161D26] text-sm font-semibold border border-[#D5CEC2] hover:bg-[#F7F4EE] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5"
               >
                 <Sparkles className="w-4 h-4 text-[#B45309]" />
                 <span>{isConnected ? 'Disconnect Sample' : '✨ Connect the Dots'}</span>
               </button>
+
+              {onOpenAiSynthesis && (
+                <button
+                  type="button"
+                  id="hero-btn-ai-memoir"
+                  onClick={() => {
+                    playClick();
+                    onOpenAiSynthesis();
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl bg-[#FAF0E6] text-[#A05A2C] text-sm font-semibold border border-[#F0DFD1] hover:bg-[#F5E6D8] shadow-xs transition-all transform hover:-translate-y-0.5"
+                >
+                  <Sparkles className="w-4 h-4 text-[#D97706]" />
+                  <span>AI Memoir</span>
+                </button>
+              )}
             </div>
 
             {/* Data summary pill stats */}
@@ -187,6 +229,60 @@ export const Hero: React.FC<HeroProps> = ({
               <div className="flex items-center gap-2">
                 <span className="font-bold text-base text-[#2D7A4C] font-mono">{totalMomentsCount}</span>
                 <span>Life Moments</span>
+              </div>
+            </div>
+
+            {/* Hackathon Judge Demo Quick-Preset Bar */}
+            <div className="pt-2 text-left">
+              <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#8C8275] uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+                <span>Judge Quick Scenarios:</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    playClick();
+                    onExploreStory(0);
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg bg-white border border-[#E5E0D6] text-xs font-medium text-[#161D26] hover:bg-[#FAF9F5] hover:border-[#2B6CB0] shadow-2xs transition-colors flex items-center gap-1.5"
+                >
+                  <span>🎓</span>
+                  <span>Coimbatore Fest</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playClick();
+                    onExploreStory(1);
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg bg-white border border-[#E5E0D6] text-xs font-medium text-[#161D26] hover:bg-[#FAF9F5] hover:border-[#2B6CB0] shadow-2xs transition-colors flex items-center gap-1.5"
+                >
+                  <span>💻</span>
+                  <span>2 AM Hackathon</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playClick();
+                    onExploreStory(2);
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg bg-white border border-[#E5E0D6] text-xs font-medium text-[#161D26] hover:bg-[#FAF9F5] hover:border-[#2B6CB0] shadow-2xs transition-colors flex items-center gap-1.5"
+                >
+                  <span>⛰️</span>
+                  <span>Nilgiris Mist</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playClick();
+                    onExploreStory(4);
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg bg-white border border-[#E5E0D6] text-xs font-medium text-[#161D26] hover:bg-[#FAF9F5] hover:border-[#2B6CB0] shadow-2xs transition-colors flex items-center gap-1.5"
+                >
+                  <span>🏃</span>
+                  <span>Marina 10K</span>
+                </button>
               </div>
             </div>
           </div>

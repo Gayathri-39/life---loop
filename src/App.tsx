@@ -142,7 +142,14 @@ function AppContent() {
         {/* 2. Hero Section with Live Animated Constellation */}
         <Hero
           onConnectDots={handleConnectDots}
-          onExploreStory={() => handlePlayStory()}
+          onExploreStory={(idx?: number) => {
+            if (typeof idx === 'number' && moments[idx]) {
+              handlePlayStory(moments[idx]);
+            } else {
+              handlePlayStory();
+            }
+          }}
+          onOpenAiSynthesis={() => setIsAiSynthesisOpen(true)}
           totalReceiptsCount={receipts.length}
           totalConnectionsCount={connections.length}
           totalMomentsCount={moments.length}
