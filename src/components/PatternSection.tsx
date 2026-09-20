@@ -53,8 +53,21 @@ export const PatternSection: React.FC<PatternSectionProps> = ({ patterns }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {patterns.map(pattern => {
+      {patterns.length === 0 ? (
+        <div className="bg-white rounded-3xl border border-[#E5E0D6] p-12 text-center space-y-4 max-w-lg mx-auto shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#E6F4EA] text-[#2D7A4C] flex items-center justify-center mx-auto">
+            <Eye className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold text-[#161D26]">No Patterns Found</h3>
+            <p className="text-xs text-[#6B7280]">
+              Add more receipts or load a dataset with multiple temporal and categorical correlations to calculate behavioral patterns.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {patterns.map(pattern => {
           const Icon = getIcon(pattern.icon);
           const isExpanded = expandedId === pattern.id;
 
@@ -125,6 +138,7 @@ export const PatternSection: React.FC<PatternSectionProps> = ({ patterns }) => {
           );
         })}
       </div>
+      )}
     </section>
   );
 };

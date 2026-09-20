@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Play, Volume2, VolumeX, Share2, Layers } from 'lucide-react';
+import { Sparkles, Play, Volume2, VolumeX, Share2, Layers, Menu, X, Plus, Bot, BarChart3 } from 'lucide-react';
 import { isSoundEnabled, toggleSound, playClick } from '../utils/soundEffects';
 
 interface NavbarProps {
   onConnectDots: () => void;
   onPlayStory: () => void;
+  onOpenAddReceipt?: () => void;
+  onOpenAiSynthesis?: () => void;
   totalReceipts: number;
   totalConnections: number;
   totalMoments: number;
@@ -13,6 +15,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   onConnectDots,
   onPlayStory,
+  onOpenAddReceipt,
+  onOpenAiSynthesis,
   totalReceipts,
   totalConnections,
   totalMoments,
@@ -20,6 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [soundOn, setSoundOn] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setSoundOn(isSoundEnabled());
@@ -43,12 +48,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header
       id="main-navbar"
       className={`sticky top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#FAF9F5]/90 backdrop-blur-md border-b border-[#E7E2DA] shadow-xs'
+          ? 'bg-[#FAF9F5]/95 backdrop-blur-md border-b border-[#E7E2DA] shadow-xs'
           : 'bg-[#FAF9F5] border-b border-transparent'
       }`}
     >
@@ -74,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </a>
 
         {/* Navigation Anchors */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-[#4B5563]">
+        <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-[#4B5563]">
           <a
             href="#graph-section"
             className="px-3 py-1.5 rounded-lg hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
@@ -107,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="px-3 py-1.5 rounded-lg hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
             id="nav-link-patterns"
           >
-            Hidden Patterns
+            Patterns
           </a>
           <a
             href="#chapters-section"
@@ -121,12 +130,53 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="px-3 py-1.5 rounded-lg hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
             id="nav-link-map"
           >
-            Life Footprint
+            Footprint
+          </a>
+          <a
+            href="#insights-section"
+            className="px-3 py-1.5 rounded-lg hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
+            id="nav-link-insights"
+          >
+            Telemetry
           </a>
         </nav>
 
         {/* Action controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Add Receipt Button (for quick demonstration) */}
+          {onOpenAddReceipt && (
+            <button
+              type="button"
+              id="nav-btn-simulate-receipt"
+              onClick={() => {
+                playClick();
+                onOpenAddReceipt();
+              }}
+              title="Add a new digital receipt to watch the graph recalculate live"
+              className="hidden sm:inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-white border border-[#D5CEC2] text-[#161D26] hover:bg-[#F2ECE1] transition-all shadow-xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-[#2B6CB0]" />
+              <span>Simulate Receipt</span>
+            </button>
+          )}
+
+          {/* AI Memoir Synthesis Button */}
+          {onOpenAiSynthesis && (
+            <button
+              type="button"
+              id="nav-btn-ai-synthesis"
+              onClick={() => {
+                playClick();
+                onOpenAiSynthesis();
+              }}
+              title="Open AI Memoir & Life Archetype Synthesis"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-linear-to-r from-[#161D26] to-[#2B6CB0] text-white hover:opacity-95 transition-all shadow-xs"
+            >
+              <Bot className="w-3.5 h-3.5 text-[#FDE68A]" />
+              <span>AI Synthesis</span>
+            </button>
+          )}
+
           {/* Audio toggle */}
           <button
             type="button"
@@ -134,6 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={handleSoundToggle}
             title={soundOn ? 'Sound FX Enabled (Click to mute)' : 'Sound Muted'}
             className="p-2 rounded-lg text-[#6B7280] hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
+            aria-label={soundOn ? 'Mute sound effects' : 'Unmute sound effects'}
           >
             {soundOn ? <Volume2 className="w-4 h-4 text-[#2D7A4C]" /> : <VolumeX className="w-4 h-4 text-[#9CA3AF]" />}
           </button>
@@ -145,10 +196,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={handleShare}
             title="Copy app link"
             className="p-2 rounded-lg text-[#6B7280] hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors relative"
+            aria-label="Copy app link"
           >
             <Share2 className="w-4 h-4" />
             {copied && (
-              <span className="absolute -bottom-8 right-0 text-[11px] bg-[#161D26] text-white px-2 py-0.5 rounded shadow-sm whitespace-nowrap">
+              <span className="absolute -bottom-8 right-0 text-[11px] bg-[#161D26] text-white px-2 py-0.5 rounded-sm shadow-xs whitespace-nowrap z-50">
                 Link copied!
               </span>
             )}
@@ -162,10 +214,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               playClick();
               onConnectDots();
             }}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#FAF9F5] text-[#161D26] border border-[#D5CEC2] hover:bg-[#F2ECE1] transition-all shadow-xs"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-[#FAF9F5] text-[#161D26] border border-[#D5CEC2] hover:bg-[#F2ECE1] transition-all shadow-xs"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#B45309]" />
-            Connect Dots
+            <span className="hidden xl:inline">Connect Dots</span>
             <span className="text-[11px] font-mono text-[#6B7280]">
               ({totalConnections})
             </span>
@@ -179,13 +231,124 @@ export const Navbar: React.FC<NavbarProps> = ({
               playClick();
               onPlayStory();
             }}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#161D26] text-[#FAF9F5] hover:bg-[#283342] transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#161D26] text-[#FAF9F5] hover:bg-[#283342] transition-all shadow-xs"
           >
             <Play className="w-3.5 h-3.5 fill-current text-[#FAF9F5]" />
             <span>Story Mode</span>
           </button>
+
+          {/* Mobile Menu Toggle (screens < lg) */}
+          <button
+            type="button"
+            id="nav-btn-mobile-toggle"
+            onClick={() => {
+              playClick();
+              setMobileMenuOpen(!mobileMenuOpen);
+            }}
+            className="lg:hidden p-2 rounded-lg text-[#6B7280] hover:text-[#161D26] hover:bg-[#F0EDE6] transition-colors"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div
+          id="mobile-nav-menu"
+          className="lg:hidden bg-[#FAF9F5] border-b border-[#E7E2DA] px-4 pt-3 pb-5 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200"
+        >
+          <div className="grid grid-cols-2 gap-2 text-sm font-medium text-[#4B5563]">
+            <a
+              href="#graph-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26]"
+            >
+              Connection Graph
+            </a>
+            <a
+              href="#moments-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26] flex items-center justify-between"
+            >
+              <span>Moments</span>
+              <span className="text-xs px-1.5 py-0.2 rounded-full bg-[#E0EDFB] text-[#2B6CB0] font-mono">
+                {totalMoments}
+              </span>
+            </a>
+            <a
+              href="#explorer-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26] flex items-center justify-between"
+            >
+              <span>Receipts Archive</span>
+              <span className="text-xs px-1.5 py-0.2 rounded-full bg-[#E7E2DA] text-[#4B5563] font-mono">
+                {totalReceipts}
+              </span>
+            </a>
+            <a
+              href="#patterns-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26]"
+            >
+              Hidden Patterns
+            </a>
+            <a
+              href="#chapters-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26]"
+            >
+              Life Chapters
+            </a>
+            <a
+              href="#map-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26]"
+            >
+              Spatial Footprint
+            </a>
+            <a
+              href="#insights-section"
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg hover:bg-[#F0EDE6] hover:text-[#161D26]"
+            >
+              Telemetry & Charts
+            </a>
+          </div>
+
+          <div className="pt-2 border-t border-[#EAE5DC] flex flex-wrap gap-2">
+            {onOpenAddReceipt && (
+              <button
+                type="button"
+                onClick={() => {
+                  closeMobileMenu();
+                  onOpenAddReceipt();
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white border border-[#DDD6CA] text-xs font-semibold text-[#161D26]"
+              >
+                <Plus className="w-3.5 h-3.5 text-[#2B6CB0]" />
+                <span>Simulate Receipt</span>
+              </button>
+            )}
+
+            {onOpenAiSynthesis && (
+              <button
+                type="button"
+                onClick={() => {
+                  closeMobileMenu();
+                  onOpenAiSynthesis();
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#161D26] text-white text-xs font-semibold"
+              >
+                <Bot className="w-3.5 h-3.5 text-[#FDE68A]" />
+                <span>AI Synthesis</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
+

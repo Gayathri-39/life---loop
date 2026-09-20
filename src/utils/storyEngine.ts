@@ -1,6 +1,18 @@
 import { LifeMoment, Receipt, StoryData, StoryScene } from '../types';
 
-export function buildStoryFromMoment(moment: LifeMoment): StoryData {
+export function buildStoryFromMoment(moment?: LifeMoment): StoryData {
+  if (!moment || !moment.receipts || moment.receipts.length === 0) {
+    return {
+      momentId: 'moment-empty',
+      momentTitle: 'Spontaneous Day',
+      location: 'Everyday',
+      date: 'Recent',
+      scenes: [],
+      climaxStatement: 'Moments unfold into memory.',
+      revelation: 'Every day is a story.',
+    };
+  }
+
   const receipts = [...moment.receipts];
 
   // Map category to a evocative narrative storytelling lead

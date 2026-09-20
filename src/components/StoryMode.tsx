@@ -35,8 +35,8 @@ export const StoryMode: React.FC<StoryModeProps> = ({
   allMoments,
   onClose,
 }) => {
-  const [selectedMoment, setSelectedMoment] = useState<LifeMoment>(
-    initialMoment || allMoments[0]
+  const [selectedMoment, setSelectedMoment] = useState<LifeMoment | undefined>(
+    initialMoment || (allMoments.length > 0 ? allMoments[0] : undefined)
   );
   const [story, setStory] = useState<StoryData>(() => buildStoryFromMoment(selectedMoment));
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -44,7 +44,9 @@ export const StoryMode: React.FC<StoryModeProps> = ({
 
   // Sync story when selected moment changes
   useEffect(() => {
-    setStory(buildStoryFromMoment(selectedMoment));
+    if (selectedMoment) {
+      setStory(buildStoryFromMoment(selectedMoment));
+    }
     setCurrentStepIndex(0);
     setIsPlaying(true);
   }, [selectedMoment]);
@@ -161,7 +163,7 @@ export const StoryMode: React.FC<StoryModeProps> = ({
             </div>
             {/* Story Moment Selector Dropdown */}
             <select
-              value={selectedMoment.id}
+              value={selectedMoment?.id || ''}
               onChange={e => {
                 const found = allMoments.find(m => m.id === e.target.value);
                 if (found) setSelectedMoment(found);

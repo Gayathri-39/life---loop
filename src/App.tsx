@@ -15,8 +15,11 @@ import { LifeMap } from './components/LifeMap';
 import { AnalyticsSection } from './components/AnalyticsSection';
 import { StoryMode } from './components/StoryMode';
 import { Footer } from './components/Footer';
+import { ToastProvider, useToast } from './components/Toast';
+import { AddReceiptModal } from './components/AddReceiptModal';
+import { AiSynthesisModal } from './components/AiSynthesisModal';
 
-export default function App() {
+function AppContent() {
   const [receipts, setReceipts] = useState<Receipt[]>(SAMPLE_RECEIPTS);
   const [isCustomData, setIsCustomData] = useState(false);
 
@@ -29,6 +32,12 @@ export default function App() {
 
   // Graph selected receipt
   const [selectedGraphReceiptId, setSelectedGraphReceiptId] = useState<number | null>(null);
+
+  // Modals for Hackathon Evaluation & Interactivity
+  const [isAddReceiptOpen, setIsAddReceiptOpen] = useState(false);
+  const [isAiSynthesisOpen, setIsAiSynthesisOpen] = useState(false);
+
+  const { showToast } = useToast();
 
   // 1. Connection Engine Analysis (Deterministic, Browser-Only)
   const connections = useMemo(() => {
@@ -57,10 +66,16 @@ export default function App() {
     if (graphElement) {
       graphElement.scrollIntoView({ behavior: 'smooth' });
     }
+    showToast(
+      'Dots Connected',
+      `Identified ${connections.length} relational bridges and ${moments.length} life moments.`,
+      'info'
+    );
   };
 
   const handlePlayStory = (moment?: LifeMoment) => {
-    setActiveStoryMoment(moment || moments[0]);
+    const targetMoment = moment || (moments.length > 0 ? moments[0] : undefined);
+    setActiveStoryMoment(targetMoment);
     setIsStoryOpen(true);
   };
 
@@ -99,12 +114,25 @@ export default function App() {
     setIsCustomData(true);
   };
 
+  const handleAddReceipt = (newReceipt: Receipt) => {
+    setReceipts(prev => [newReceipt, ...prev]);
+    setIsCustomData(true);
+    setSelectedGraphReceiptId(newReceipt.id);
+    showToast(
+      'Receipt Ingested & Analyzed',
+      `"${newReceipt.title}" was injected into the engine. Connected to ${newReceipt.location}.`,
+      'success'
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-[#161D26] font-['Plus_Jakarta_Sans'] flex flex-col selection:bg-[#E8DFD0] selection:text-[#161D26]">
       {/* 1. Global Navigation */}
       <Navbar
         onConnectDots={handleConnectDots}
         onPlayStory={() => handlePlayStory()}
+        onOpenAddReceipt={() => setIsAddReceiptOpen(true)}
+        onOpenAiSynthesis={() => setIsAiSynthesisOpen(true)}
         totalReceipts={receipts.length}
         totalConnections={connections.length}
         totalMoments={moments.length}
@@ -179,11 +207,12 @@ export default function App() {
         />
       </main>
 
-      {/* 10. Footer with JSON Import/Reset */}
+      {/* 10. Footer with JSON Import/Export/Reset */}
       <Footer
         onResetData={handleResetData}
         onImportData={handleImportData}
         isCustomData={isCustomData}
+        currentReceipts={receipts}
       />
 
       {/* 11. Cinematic Story Mode Modal */}
@@ -194,6 +223,32 @@ export default function App() {
           onClose={() => setIsStoryOpen(false)}
         />
       )}
+
+      {/* 12. Simulate/Add Receipt Modal for Live Demo Testing */}
+      <AddReceiptModal
+        isOpen={isAddReceiptOpen}
+        onClose={() => setIsAddReceiptOpen(false)}
+        onAddReceipt={handleAddReceipt}
+        existingCount={receipts.length}
+      />
+
+      {/* 13. AI Synthesis & Digital Life Memoir Modal */}
+      <AiSynthesisModal
+        isOpen={isAiSynthesisOpen}
+        onClose={() => setIsAiSynthesisOpen(false)}
+        receipts={receipts}
+        moments={moments}
+        patterns={patterns}
+      />
     </div>
   );
 }
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <AppContent />
+    </ToastProvider>
+  );
+}
+

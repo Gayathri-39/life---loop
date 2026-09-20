@@ -1,6 +1,6 @@
 {
   "name": "LIFELOOP",
-  "description": "Hundreds of moments. One story. Connecting digital receipts into meaningful life moments, patterns, and stories.",
+  "description": "Your digital life is made of tiny moments. LIFELOOP connects them to reveal the stories hiding between the receipts.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

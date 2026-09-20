@@ -45,8 +45,21 @@ export const LifeMoments: React.FC<LifeMomentsProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {moments.map(moment => {
+      {moments.length === 0 ? (
+        <div className="bg-white rounded-3xl border border-[#E5E0D6] p-12 text-center space-y-4 max-w-lg mx-auto shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#FEF3C7] text-[#B45309] flex items-center justify-center mx-auto">
+            <Compass className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold text-[#161D26]">No Moments Synthesized Yet</h3>
+            <p className="text-xs text-[#6B7280]">
+              The Connection Engine requires receipts with matching locations, temporal proximity, or shared semantic keywords.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {moments.map(moment => {
           return (
             <article
               key={moment.id}
@@ -177,6 +190,7 @@ export const LifeMoments: React.FC<LifeMomentsProps> = ({
           );
         })}
       </div>
+      )}
     </section>
   );
 };

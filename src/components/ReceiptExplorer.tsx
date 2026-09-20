@@ -176,7 +176,10 @@ export const ReceiptExplorer: React.FC<ReceiptExplorerProps> = ({
           </div>
           <h3 className="font-bold text-lg text-[#161D26]">No matching receipts found</h3>
           <p className="text-xs text-[#6B7280]">
-            No records matched "{searchQuery}". Try clearing filters or searching for terms like "Bengaluru", "coffee", or "evening".
+            {searchQuery
+              ? `No records matched "${searchQuery}".`
+              : 'No records found for the selected category filter.'}{' '}
+            Try clearing filters or searching for terms like "Bengaluru", "coffee", or "concert".
           </p>
           <button
             type="button"

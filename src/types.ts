@@ -31,7 +31,8 @@ export interface Receipt {
     mood?: string;
     platform?: string;
     genre?: string;
-    duration?: string;
+    note?: string;
+    [key: string]: any;
   };
 }
 
