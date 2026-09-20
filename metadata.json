@@ -1,6 +1,6 @@
 {
-  "name": "LIFELOOP",
-  "description": "Your digital life is made of tiny moments. LIFELOOP connects them to reveal the stories hiding between the receipts.",
+  "name": "Life-Loop (2)",
+  "description": "Your digital life is made of tiny moments. Life-Loop (2) connects them to reveal the stories hiding between the receipts.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

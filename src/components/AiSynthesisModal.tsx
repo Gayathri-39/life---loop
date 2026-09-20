@@ -114,7 +114,7 @@ export const AiSynthesisModal: React.FC<AiSynthesisModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 id="ai-modal-title" className="text-xl font-bold text-[#161D26] font-['Plus_Jakarta_Sans']">
-                  AI Life Synthesis Engine
+                  Life-Loop (2) AI Synthesis
                 </h3>
                 <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-[#E0EDFB] text-[#2B6CB0] font-bold">
                   Neural Narrative

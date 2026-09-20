@@ -70,10 +70,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-xl tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans']">
-                LIFELOOP
+                Life-Loop
               </span>
-              <span className="text-[10px] tracking-wider uppercase px-1.5 py-0.5 rounded font-mono font-medium bg-[#E8DFD0]/60 text-[#544F49]">
-                v1.0
+              <span className="text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full font-mono font-bold bg-[#161D26] text-[#FAF9F5] shadow-2xs">
+                (2)
               </span>
             </div>
             <p className="text-xs text-[#6B7280] hidden sm:block">
