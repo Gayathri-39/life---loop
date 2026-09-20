@@ -86,13 +86,13 @@ export const Footer: React.FC<FooterProps> = ({
       const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(currentReceipts, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute('href', dataStr);
-      downloadAnchor.setAttribute('download', `lifeloop-2-receipts-${Date.now()}.json`);
+      downloadAnchor.setAttribute('download', `connected-receipts-${Date.now()}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
       showToast(
         'Dataset Exported',
-        `Downloaded ${currentReceipts.length} receipts to lifeloop-2-receipts.json`,
+        `Downloaded ${currentReceipts.length} receipts to connected-receipts.json`,
         'success'
       );
     } catch {
@@ -110,14 +110,9 @@ export const Footer: React.FC<FooterProps> = ({
               <Layers className="w-4 h-4 text-[#E8DFD0]" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm text-[#161D26] tracking-tight font-['Plus_Jakarta_Sans']">
-                  Life-Loop
-                </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full bg-[#161D26] text-[#FAF9F5]">
-                  (2)
-                </span>
-              </div>
+              <span className="font-bold text-sm text-[#161D26] tracking-tight font-['Plus_Jakarta_Sans'] block">
+                Connected
+              </span>
               <p className="text-[11px] text-[#8C8275]">
                 "Hundreds of moments. One story."
               </p>

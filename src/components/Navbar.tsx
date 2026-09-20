@@ -70,10 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-xl tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans']">
-                Life-Loop
-              </span>
-              <span className="text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full font-mono font-bold bg-[#161D26] text-[#FAF9F5] shadow-2xs">
-                (2)
+                Connected
               </span>
             </div>
             <p className="text-xs text-[#6B7280] hidden sm:block">
@@ -223,7 +220,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </button>
 
-          {/* Story Mode Button */}
+          {/* Start Your Story Button */}
           <button
             type="button"
             id="nav-btn-play-story"
@@ -233,8 +230,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#161D26] text-[#FAF9F5] hover:bg-[#283342] transition-all shadow-xs"
           >
-            <Play className="w-3.5 h-3.5 fill-current text-[#FAF9F5]" />
-            <span>Story Mode</span>
+            <Play className="w-3.5 h-3.5 fill-current text-[#FDE68A]" />
+            <span>Start Your Story</span>
           </button>
 
           {/* Mobile Menu Toggle (screens < lg) */}
@@ -259,6 +256,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           id="mobile-nav-menu"
           className="lg:hidden bg-[#FAF9F5] border-b border-[#E7E2DA] px-4 pt-3 pb-5 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200"
         >
+          {/* Prominent Start Your Story Action Button */}
+          <button
+            type="button"
+            id="mobile-btn-start-story"
+            onClick={() => {
+              closeMobileMenu();
+              playClick();
+              onPlayStory();
+            }}
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#161D26] text-white text-sm font-bold shadow-md active:scale-98 transition-all"
+          >
+            <Play className="w-4 h-4 fill-current text-[#FDE68A]" />
+            <span>Start Your Story</span>
+          </button>
+
           <div className="grid grid-cols-2 gap-2 text-sm font-medium text-[#4B5563]">
             <a
               href="#graph-section"

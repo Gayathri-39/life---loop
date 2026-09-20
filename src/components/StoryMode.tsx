@@ -153,8 +153,8 @@ export const StoryMode: React.FC<StoryModeProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs uppercase tracking-widest text-white/50 font-mono">
-                CINEMATIC REPLAY
+              <span className="text-xs uppercase tracking-widest text-[#FDE68A] font-mono font-bold">
+                START YOUR STORY
               </span>
               <span className="text-white/30">•</span>
               <span className="text-xs font-semibold text-white/80">

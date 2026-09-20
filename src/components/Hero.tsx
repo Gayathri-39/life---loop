@@ -125,39 +125,29 @@ export const Hero: React.FC<HeroProps> = ({
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EFECE6] border border-[#DDD6CA] text-xs font-semibold text-[#544F49]">
               <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-              <span>Life-Loop (2) • Relationship Engine & Synthesis</span>
+              <span>Connected • Relationship Engine & Synthesis</span>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-center lg:justify-start gap-3">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#161D26] font-['Plus_Jakarta_Sans'] leading-[1.1]">
-                  Life-Loop
+                  Start Your Story
                 </h1>
-                <span className="text-xl sm:text-2xl font-mono font-bold px-3 py-1 rounded-xl bg-[#161D26] text-[#FAF9F5] shadow-xs">
-                  (2)
+                <span className="text-sm font-mono font-bold px-2.5 py-1 rounded-xl bg-[#161D26] text-[#FAF9F5] shadow-xs">
+                  Connected
                 </span>
               </div>
               <p className="text-2xl sm:text-3xl font-medium text-[#7C7469] font-['Playfair_Display'] italic">
-                Hundreds of moments. One story.
+                Hundreds of moments. One connected life.
               </p>
             </div>
 
             <p className="text-base sm:text-lg text-[#5A6372] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Your digital life is made of tiny moments. Life-Loop (2) connects them to reveal the stories hiding between the receipts.
+              Your digital life is made of tiny moments. Connected brings them together to reveal the stories hiding between the receipts.
             </p>
 
             {/* CTA Buttons */}
             <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-              <button
-                type="button"
-                id="hero-btn-connect-dots"
-                onClick={handleHeroConnect}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#161D26] text-[#FAF9F5] text-sm font-semibold hover:bg-[#283342] shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-              >
-                <Sparkles className="w-4 h-4 text-[#FDE68A]" />
-                <span>{isConnected ? 'Disconnect Sample' : '✨ Connect the Dots'}</span>
-              </button>
-
               <button
                 type="button"
                 id="hero-btn-explore-story"
@@ -165,10 +155,20 @@ export const Hero: React.FC<HeroProps> = ({
                   playClick();
                   onExploreStory();
                 }}
+                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#161D26] text-[#FAF9F5] text-sm font-semibold hover:bg-[#283342] shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <Play className="w-4 h-4 text-[#FDE68A] fill-current" />
+                <span>Start Your Story</span>
+              </button>
+
+              <button
+                type="button"
+                id="hero-btn-connect-dots"
+                onClick={handleHeroConnect}
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#FFFFFF] text-[#161D26] text-sm font-semibold border border-[#D5CEC2] hover:bg-[#F7F4EE] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5"
               >
-                <Play className="w-4 h-4 text-[#E07A5F] fill-current" />
-                <span>▶ Explore My Story</span>
+                <Sparkles className="w-4 h-4 text-[#B45309]" />
+                <span>{isConnected ? 'Disconnect Sample' : '✨ Connect the Dots'}</span>
               </button>
             </div>
 
